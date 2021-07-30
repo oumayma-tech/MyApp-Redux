@@ -1,6 +1,7 @@
-import { addtask, done } from "./actiontype"
+import { addtask, done, show_completed,show_incompleted } from "./actiontype"
 import {removetask} from "./actiontype"
 import {edittask} from "./actiontype"
+import {toggle_task} from './actiontype'
 
 let nextTodoId = 0;
 
@@ -19,17 +20,17 @@ export const Removetask=(id)=>{
     
 }
 }
-export const Edittask=(todo)=>{
+export const Edittask=(id,task)=>{
   return{
     type:edittask,
-    payload:todo
+    payload:{id,task}
 
   }
 }
-export const Done=(id)=>{
+export const toggle_Task=(id)=>{
   return{
-    type:done,
-    payload:id,
-    done: false
+    type:toggle_task,
+  payload:id
+  
   }
 }

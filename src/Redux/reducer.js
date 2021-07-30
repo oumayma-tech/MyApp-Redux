@@ -1,26 +1,30 @@
 
-import { addtask, removetask,edittask ,done} from "./actiontype"
+import { addtask, removetask,edittask ,toggle_task} from "./actiontype"
 const inisialState={
-   Tasks:[{id:0,text:'hello',done:false}],
-   text:""
+   Tasks:[{id:0,task:'hello',isDone:false}],
+  
  
 }
 const Taskreducer=(state=inisialState,action)=>{
     switch (action.type) {
         case addtask:
-            return{...state,Tasks:[...state.Tasks,{text:action.payload, id:Math.random(),isdone:false}]}
+            return{...state,Tasks:[...state.Tasks,{task:action.payload, id:Math.random(),isDdone:false}]}
             
         case removetask:
           
             return {...state, Tasks: state.Tasks.filter((T,i)=> T.id!==action.payload)}
         case edittask:
             
-        return{...state,Tasks:state.Tasks.map((key,i)=>key.id==action.paload.id? {...key,text:action.payload.text}:key
+        return{...state,Tasks:state.Tasks.map((key)=>key.id==action.payload.id ? {...key,task:action.payload.task}:key
         )}
-        case done:
-            return {...state,tasks:state.tasks.filter(x=>x.done ===action.payload.done)}
+        case toggle_task: {
+          
+           return  {...state,Tasks:state.Tasks.map((task) =>
+                  task.id === action.payload ? { ...task, isDone: !task.isDone } : task
+                ),
+              };}
         
-        default:
+    default:
            return state
     }
 }

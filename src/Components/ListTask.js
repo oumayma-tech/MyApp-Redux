@@ -1,32 +1,27 @@
-import { useSelector ,useDispatch} from "react-redux"
-import { Addtask, Edittask, Removetask } from "../Redux/action"
-import React ,{useState} from 'react'
+import React,{useState} from 'react'
+import Task from './Task'
 import "./tasklist.css"
-import {CSSTransition,TransitionGroup} from "react-transition-group"
+import { Button } from "react-bootstrap"
+import { useSelector } from "react-redux"
 
-
-
-
-const ListTask=()=>{
-    const[input,setInput]= useState("")
-    const [text, setText] = useState("")
+function ListTask() {
+    const [filter,setFilter] =useState(false)
+    const [done,setDone]=useState(false)
     const Tasks=useSelector((state)=>state.Tasks)
-   const dispatch = useDispatch()
-    return(
-        <div className="TodoList">
-            
-           
-            <ul>
-   {Tasks.map((el)=>
-   <li className="Todo-task" key={el.id}>
-       <p>{el.text}</p>
-       <button onClick={()=>dispatch(Removetask(el.id))}> remove</button>
-       <button onClick={()=>dispatch(Edittask(el.i))}> edit</button>
-       </li>
-    )}
-     
-            </ul>
-        </div>
+    return (
+        <div className="listTask">
+            <div className="filter_btns" style={{ marginBottom: "25px" }}>
+                <Button variant="outline-success" onClick={()=>{setFilter(true);setDone(true)}} >Show Done</Button>
+                <Button variant="outline-danger" onClick={()=>{setFilter(true);setDone(false)}} > Show Not Done</Button>
+                <Button variant="info"onClick={()=>setFilter(false)} >Remove All Filters</Button>
+            </div>
+            {
+                !filter ? Tasks.map((task, index) => (<Task task={task} key={index} index={index} />)):
+                done ? Tasks.filter(todo=>todo.isDone===true).map((task, index) => (<Task task={task} key={index} index={index} />)):
+                Tasks.filter(todo=>todo.isDone===false).map((task, index) => (<Task task={task} key={index} index={index} />))
+            }
+        </div >
     )
 }
+
 export default ListTask
